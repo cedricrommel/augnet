@@ -1,0 +1,25 @@
+name: augnet
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+- python>=3.7
+- numpy
+- pandas
+- scipy
+- matplotlib
+- scikit-learn
+- seaborn
+- pytest
+- pip
+- nvidia::cudatoolkit=11.1
+- pytorch::pytorch>=1.8.0
+- pytorch::torchvision>=0.11.1
+- skorch
+- pip:
+  - mne
+  - braindecode
+  - torchdiffeq
+  - kornia>=0.6.3
+  # - https://github.com/kornia/kornia.git

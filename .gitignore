@@ -1,0 +1,14 @@
+*.json
+*.pyc
+*.pkl
+*.pt
+*.txt
+*.egg-info
+.ipynb_checkpoints/
+datasets/
+*.ipynb
+*.png
+*.pdf
+*.svg
+logs/
+.DS_Store
