@@ -1,5 +1,7 @@
 # AugNet
 
+[![codecov](https://codecov.io/gh/cedricrommel/augnet/branch/main/graph/badge.svg?token=W3MDXN2OG6)](https://codecov.io/gh/cedricrommel/augnet)
+
 This repository contains the code used in the experiments of _Rommel, Moreau and Gramfort, ["Deep invariant networks with differentiable augmentation layers"](https://arxiv.org/abs/2202.02142), NeurIPS, 2022_.
 
 ![augnet](assets/architecture-2.jpg "AugNet meta-architecture")
