@@ -50,7 +50,7 @@ pip install -e .
 ## How to create your own AugNet meta-model
 
 You can create augmentation layers using the ``augnet.models.AugmentationLayer``
-class, by passing to is a list of differentiable augmentations, such as those
+class, by passing to it a list of differentiable augmentations, such as those
 in the module ``augnet.augmentations.vision``:
 
 ```python
