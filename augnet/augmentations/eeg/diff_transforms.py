@@ -155,7 +155,10 @@ class DiffTransform(Transform):
             mask = self._get_mask(X.shape[0]).to(X.device)
 
             # Transform whole batch
-            tr_X, tr_y = self.operation(X, y, **self.get_params(X, y))
+            tr_X, tr_y = self.operation(
+                X, y,
+                **self.get_augmentation_params(X, y)
+            )
             # Create the convex combination
             out_X = mask * tr_X + (1 - mask) * X
 
@@ -175,8 +178,8 @@ class DiffTransform(Transform):
         lb, ub = self.mag_range
         return (self.magnitude * ub + (1 - self.magnitude) * lb).to(X.device)
 
-    def get_params(self, X, y):
-        return super().get_params(X, y)
+    def get_augmentation_params(self, X, y):
+        return super().get_augmentation_params(X, y)
 
     def _get_mask(self, batch_size=None) -> torch.Tensor:
         if self.training:
@@ -317,6 +320,7 @@ class DiffFTSurrogate(DiffTransform):
         initial_magnitude=None,
         mag_range=(0, 1),
         temperature=0.05,
+        channel_indep=False,
         random_state=None
     ):
         super().__init__(
@@ -326,10 +330,12 @@ class DiffFTSurrogate(DiffTransform):
             temperature=temperature,
             random_state=random_state
         )
+        self.channel_indep = channel_indep
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         return {
             "phase_noise_magnitude": self._map_magnitude(X),
+            "channel_indep": self.channel_indep,
             "random_state": self.rng,
         }
 
@@ -386,7 +392,7 @@ class DiffChannelsDropout(DiffTransform):
             random_state=random_state
         )
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         return {
             "p_drop": self._map_magnitude(X),
             "random_state": self.rng,
@@ -445,7 +451,7 @@ class DiffChannelsShuffle(DiffTransform):
             random_state=random_state
         )
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         return {
             "p_shuffle": self._map_magnitude(X),
             "random_state": self.rng,
@@ -510,7 +516,7 @@ class DiffGaussianNoise(DiffTransform):
             random_state=random_state,
         )
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         return {
             "std": self._map_magnitude(X),
             "random_state": self.rng,
@@ -592,7 +598,7 @@ class DiffChannelsSymmetry(DiffTransform):
             random_state=random_state,
         )
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         return {"permutation": self.permutation}
 
 
@@ -658,7 +664,7 @@ class DiffTimeMask(DiffTransform):
             random_state=random_state,
         )
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         """Return transform parameters.
 
         Parameters
@@ -741,7 +747,7 @@ class DiffFrequencyShift(DiffTransform):
             random_state=random_state,
         )
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         u = torch.as_tensor(
             self.rng.uniform(size=X.shape[0]),
             device=X.device
@@ -844,7 +850,7 @@ class DiffSensorsRotation(DiffTransform):
             random_state=random_state
         )
 
-    def get_params(self, X, y):
+    def get_augmentation_params(self, X, y):
         """Return transform parameters.
 
         Parameters
